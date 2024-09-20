@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google Books API</title>
+  </head>
+  <body>
+    <h1>Google Books API</h1>
+    <ul id="bookList"></ul>
+
+    <script>
+      let key = "";
+      let url = "https://www.googleapis.com/books/v1/volumes?q=alchemist&key=";
+
+      fetch(url + key)
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+            let bookList = document.getElementById("bookList");
+            data.items.forEach(function(book){
+                let title = book.volumeInfo.title;
+                let author = book.volumeInfo.authors[0];
+                let bookID = book.id;
+                let link = book.volumeInfo.previewLink;
+                // let newBook = `<li> <h2> ${title} by <em> ${author} </em> </h2> BOOK ID: ${bookID} </br> LINK: <a href = "${link}"> ${link} </a> </li>`;
+                //bookList.innerHTML += newBook;
+
+                // Better way to show content using append child
+                let li = document.createElement("li");
+                let h2 = document.createElement("h2");
+                let h2Text = document.createTextNode(title);
+                h2.appendChild(h2Text);
+                li.appendChild(h2);
+                bookList.appendChild(li);
+                console.log(book.volumeInfo.title);
+            });
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+    </script>
+  </body>
+</html>
+
+<!--
+Access to my code:
+https://livecode.codeadam.ca/
+
+Google Books API Docs:
+https://developers.google.com/books/docs/v1/getting_started
+-->
