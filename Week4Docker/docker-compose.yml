@@ -9,6 +9,7 @@ services:
       - 443:443
     volumes:
       - ./www:/var/www/html
+    command: "/bin/sh -c 'docker-php-ext-install mysqli && apache2-foreground'"
   db:
     image: mysql:latest
     environment:
@@ -16,6 +17,8 @@ services:
       MYSQL_USER: demo
       MYSQL_PASSWORD: password
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
   phpmyadmin:
     depends_on:
       - db
